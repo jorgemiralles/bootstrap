@@ -12,3 +12,4 @@ This is a static HTML documentation repo - no build, test, or lint commands need
 - No development server required - open HTML files directly in browser
 - No package manager, no dependencies
 - Just edit and reload HTML files in browser to verify changes
+- Package manager: Alpine (use `apk add <package>`)
