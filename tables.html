@@ -16,7 +16,7 @@
       crossorigin="anonymous"/>
   </head>
 
-  <body>
+  <body class="d-flex flex-column min-vh-100">
   <header>
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
       <div class="container">
@@ -59,7 +59,7 @@
                 <a class="nav-link" href="forms.html">Forms</a>
               </li>
               <li class="nav-item">
-                <a href="https://icons.getbootstrap.com/" class="nav-link text-primary">Iconos</a>
+                <a href="https://icons.getbootstrap.com/" class="nav-link text-primary">Icons</a>
               </li>
               <li class="nav-item">
                 <a href="https://getbootstrap.com/docs/5.3/examples/" class="nav-link text-primary">Examples</a>
@@ -72,43 +72,8 @@
           </div>
         </nav>
     </header>
-    <div class="container mt-3">
-      <h2>Basic Table</h2>
-      <p>
-        The .table class adds basic styling (light padding and horizontal
-        dividers) to a table:
-      </p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Firstname</th>
-            <th>Lastname</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>John</td>
-            <td>Doe</td>
-            <td>john@example.com</td>
-          </tr>
-          <tr>
-            <td>Mary</td>
-            <td>Moe</td>
-            <td>mary@example.com</td>
-          </tr>
-          <tr>
-            <td>July</td>
-            <td>Dooley</td>
-            <td>july@example.com</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
 
-    <br>
-
-    <div class="container mt-3">
+    <div class="container mt-3 flex-grow-1">
       <h2>Striped Rows</h2>
       <p>The .table-striped class adds zebra-stripes to a table:</p>
       <table class="table table-striped">
@@ -235,5 +200,10 @@
     </table>
   </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <footer class="bg-secondary text-white text-center py-2 mt-5">
+    <div class="container">
+      <p class="mb-0">© Jorge Miralles Fernandez</p>
+    </div>
+  </footer>
   </body>
 </html>
