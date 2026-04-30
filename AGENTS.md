@@ -24,6 +24,16 @@ This is a static HTML documentation repo - no build, test, or lint commands need
 - **Script placement**: Bootstrap JS bundle loaded at the end of `<body>`
 - **No emojis** in code or content
 
+## Commit style
+
+- Use imperative mood (e.g., "Add", "Change", "Fix", "Update")
+- Keep messages concise (under 50 characters when possible)
+- Describe what was done, not why
+- Examples:
+  - `Add active class to current page in navigation menu`
+  - `Change navigation container from container-fluid to container`
+  - `Translate Spanish text to English in navigation menus`
+
 ## File list
 
 | File | Description |
