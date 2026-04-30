@@ -70,7 +70,7 @@
             </li>
           </ul>
         </div>
-        <button class="btn btn-outline-secondary ms-auto" id="themeToggle" aria-label="Toggle theme">Light</button>
+        <button class="btn btn-outline-secondary ms-auto" id="themeToggle" aria-label="Toggle theme">Dark</button>
       </div>
     </nav>
   </header>
@@ -171,7 +171,7 @@
         toggle.textContent = stored === 'dark' ? 'Light' : 'Dark';
         updateNavbarTheme(stored);
       } else {
-        toggle.textContent = 'Light';
+        toggle.textContent = 'Dark';
         updateNavbarTheme('light');
       }
       toggle.addEventListener('click', function() {
