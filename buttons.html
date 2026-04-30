@@ -7,7 +7,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
-  <!-- Bootstrap CSS v5.2.1 -->
+  <!-- Bootstrap CSS v5.3.8 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
     crossorigin="anonymous" />
@@ -18,11 +18,11 @@
   <header>
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
       <div class="container">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
@@ -66,15 +66,98 @@
               <a href="https://themes.getbootstrap.com/" class="nav-link text-primary">Temas</a>
             </li>
           </ul>
-          </div>
         </div>
-      </nav>
+      </div>
+    </nav>
   </header>
 
-  <div class="container flex-grow-1">
+  <div class="container mt-3 flex-grow-1">
+    <h2>Button Styles</h2>
+    <p class="text-muted mb-4">Bootstrap 5 provides different button styles and colors.</p>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Basic Buttons</h3>
+        <p>Use the <code>.btn</code> class with context colors for different button styles.</p>
+        <button type="button" class="btn">Basic</button>
+        <button type="button" class="btn btn-primary">Primary</button>
+        <button type="button" class="btn btn-secondary">Secondary</button>
+        <button type="button" class="btn btn-success">Success</button>
+        <button type="button" class="btn btn-info">Info</button>
+        <button type="button" class="btn btn-warning">Warning</button>
+        <button type="button" class="btn btn-danger">Danger</button>
+        <button type="button" class="btn btn-dark">Dark</button>
+        <button type="button" class="btn btn-light">Light</button>
+        <button type="button" class="btn btn-link">Link</button>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Outline Buttons</h3>
+        <p>Use <code>.btn-outline-*</code> for buttons with outlines only.</p>
+        <button type="button" class="btn btn-outline-primary">Primary</button>
+        <button type="button" class="btn btn-outline-secondary">Secondary</button>
+        <button type="button" class="btn btn-outline-success">Success</button>
+        <button type="button" class="btn btn-outline-info">Info</button>
+        <button type="button" class="btn btn-outline-warning">Warning</button>
+        <button type="button" class="btn btn-outline-danger">Danger</button>
+        <button type="button" class="btn btn-outline-dark">Dark</button>
+        <button type="button" class="btn btn-outline-light text-dark">Light</button>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Button Sizes</h3>
+        <p>Use <code>.btn-lg</code>, <code>.btn-sm</code> for different sizes.</p>
+        <button type="button" class="btn btn-primary btn-lg">Large</button>
+        <button type="button" class="btn btn-primary">Default</button>
+        <button type="button" class="btn btn-primary btn-sm">Small</button>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Disabled Buttons</h3>
+        <p>Add the <code>disabled</code> attribute to disable a button.</p>
+        <button type="button" class="btn btn-primary" disabled>Disabled Primary</button>
+        <button type="button" class="btn btn-outline-primary" disabled>Disabled Outline</button>
+      </div>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-body">
+        <h3 class="card-title">Loading Spinners</h3>
+        <p>Use spinners inside buttons to indicate loading state.</p>
+        <button class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm"></span>
+        </button>
+        <button class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm"></span>
+          Loading..
+        </button>
+        <button class="btn btn-primary" disabled>
+          <span class="spinner-border spinner-border-sm"></span>
+          Loading..
+        </button>
+        <button class="btn btn-primary" disabled>
+          <span class="spinner-grow spinner-grow-sm"></span>
+          Loading..
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-secondary text-white text-center py-2 mt-5">
+    <div class="container">
       <p class="mb-0">© Jorge Miralles Fernandez</p>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

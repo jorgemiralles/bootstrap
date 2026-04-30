@@ -2,12 +2,15 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Containers</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+  <!-- Bootstrap CSS v5.3.8 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous" />
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -15,11 +18,11 @@
   <header>
     <nav class="navbar navbar-expand-sm bg-light navbar-light">
       <div class="container">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav">
             <li class="nav-item">
               <a class="nav-link" href="/">Home</a>
             </li>
@@ -63,26 +66,70 @@
               <a href="https://themes.getbootstrap.com/" class="nav-link text-primary">Temas</a>
             </li>
           </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="flex-grow-1">
+
+    <div class="container mt-3">
+      <h2>Container Examples</h2>
+      <p class="text-muted mb-4">See the difference between fixed-width and full-width containers.</p>
+    </div>
+
+    <div class="container bg-light border p-4 mb-4">
+      <h3>.container</h3>
+      <p>Fixed width container that changes at each breakpoint. Resize the page to see the width change at breakpoints.</p>
+      <p class="mb-0"><strong>Current width:</strong> <span id="container-width"></span></p>
+    </div>
+
+    <div class="container-fluid bg-primary text-white p-4 mb-4">
+      <h3>.container-fluid</h3>
+      <p>This container spans the FULL WIDTH of the page at all times. Resize the page - the width always matches the viewport!</p>
+      <p class="mb-0"><strong>Current width:</strong> <span id="fluid-width"></span></p>
+    </div>
+
+    <div class="container mt-4">
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Responsive Containers</h3>
+          <p class="text-muted">Use <code>.container-sm|md|lg|xl|xxl</code> for containers that are 100% wide until the specified breakpoint.</p>
+
+          <div class="container-sm bg-light border p-3 mb-2">
+            <p class="mb-0"><code>.container-sm</code> - 100% wide until sm (576px)</p>
+          </div>
+          <div class="container-md bg-light border p-3 mb-2">
+            <p class="mb-0"><code>.container-md</code> - 100% wide until md (768px)</p>
+          </div>
+          <div class="container-lg bg-light border p-3 mb-2">
+            <p class="mb-0"><code>.container-lg</code> - 100% wide until lg (992px)</p>
           </div>
         </div>
-      </nav>
-  </header>
-  <div class="container p-5 bg-primary text-white text-center flex-grow-1">
-    <h1>My First Bootstrap Page - container </h1>
-    <p>Resize this responsive page to see the effect!</p>
+      </div>
+    </div>
+
   </div>
-  <br>
-  <br>
-  <br>
-  <div class="container-fluid p-5 bg-primary text-white text-center">
-    <h1>My First Bootstrap Page - container-fluid</h1>
-    <p>Resize this responsive page to see the effect!</p>
-  </div>
+
   <footer class="bg-secondary text-white text-center py-2 mt-5">
     <div class="container">
       <p class="mb-0">© Jorge Miralles Fernandez</p>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script>
+    function updateWidth() {
+      const containerEl = document.querySelector('.container:not(.navbar .container)');
+      const fluidEl = document.querySelector('.container-fluid');
+      if (containerEl) document.getElementById('container-width').textContent = containerEl.offsetWidth + 'px';
+      if (fluidEl) document.getElementById('fluid-width').textContent = fluidEl.offsetWidth + 'px';
+    }
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+  </script>
 </body>
 
 </html>
