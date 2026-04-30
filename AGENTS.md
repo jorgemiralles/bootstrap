@@ -20,7 +20,7 @@ This is a static HTML documentation repo - no build, test, or lint commands need
 - **Layout structure**: Semantic HTML5 (`<header>`, `<main>`, `<footer>`) with independent sections
 - **Full-width sections**: Apply background colors to `<section>` elements, use `.container` inside for centered content
 - **Navbar**: All pages use collapsible navbar with `navbar-toggler` + collapse wrapper for mobile
-- **CDN assets**: No `integrity` or `crossorigin` attributes (hash mismatches between versions)
+- **CDN assets**: Include `integrity` and `crossorigin` attributes for security (SRI hashes for Bootstrap 5.3.8)
 - **Script placement**: Bootstrap JS bundle loaded at the end of `<body>`
 - **No emojis** in code or content
 
