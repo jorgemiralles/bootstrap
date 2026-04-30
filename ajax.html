@@ -6,15 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
   <style>
-    .hero-section {
-      transition: background-color 0.3s;
-    }
-    [data-bs-theme="dark"] .hero-section {
-      background-color: var(--bs-dark);
-    }
-    [data-bs-theme="light"] .hero-section {
-      background-color: var(--bs-primary);
-    }
   </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -79,26 +70,22 @@
   </header>
 
   <main>
-    <section class="p-5 hero-section text-white text-center">
-      <div class="container">
-        <h1 class="display-4 fw-bold">AJAX Example</h1>
-        <p class="lead">Fetch data from PokeAPI using Vanilla JavaScript</p>
-      </div>
-    </section>
-
-    <section class="container my-5">
-      <div class="row justify-content-center">
+    <div class="container mt-3 flex-grow-1">
+      <div class="row justify-content-center mb-4">
         <div class="col-md-6">
           <div class="card">
             <div class="card-body text-center">
-              <h3 class="card-title mb-4">Pokemon Data Fetcher</h3>
-              <button id="fetchData" class="btn btn-primary mb-3">Fetch Ditto Data</button>
-              <div id="pokemonData"></div>
+              <h3 class="card-title mb-4">Pokemon Data Fetcher with AJAX</h3>
+              <div class="input-group">
+                <input type="text" class="form-control" id="pokemonName" placeholder="Enter Pokemon name" aria-label="Pokemon name">
+                <button class="btn btn-primary" id="fetchData" type="button">Fetch</button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+      <div id="pokemonData"></div>
+    </div>
   </main>
 
   <footer class="bg-secondary text-white text-center py-2 mt-5">
@@ -112,17 +99,54 @@
     document.addEventListener('DOMContentLoaded', function() {
       const fetchBtn = document.getElementById('fetchData');
       const pokemonData = document.getElementById('pokemonData');
+      const pokemonInput = document.getElementById('pokemonName');
+      pokemonInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          fetchBtn.focus();
+          fetchBtn.click();
+        }
+      });
       fetchBtn.addEventListener('click', function() {
-        fetch('https://pokeapi.co/api/v2/pokemon/ditto')
+        const name = pokemonInput.value.trim().toLowerCase();
+        if (!name) {
+          pokemonData.innerHTML = '<div class="alert alert-warning">Please enter a Pokemon name</div>';
+          return;
+        }
+        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
           .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.json();
           })
           .then(data => {
+            const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
+            const stats = data.stats.map(s => `
+              <div class="mb-1">
+                <small>${s.stat.name}: ${s.base_stat}</small>
+                <div class="progress" style="height: 8px;">
+                  <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
+                </div>
+              </div>
+            `).join('');
             pokemonData.innerHTML = `
-              <div class="alert alert-success">
-                <h5>Pokemon ID: ${data.id}</h5>
-                <h5>Pokemon Name: ${data.forms[0].name}</h5>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    <div class="col-md-6 text-center">
+                      <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
+                    </div>
+                    <div class="col-md-6">
+                      <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
+                      <div class="mb-3">${types}</div>
+                      <div class="mb-3">
+                        <div><small>Height: ${data.height / 10}m</small></div>
+                        <div><small>Weight: ${data.weight / 10}kg</small></div>
+                        <div><small>Base Exp: ${data.base_experience}</small></div>
+                      </div>
+                      <h6>Stats</h6>
+                      ${stats}
+                    </div>
+                  </div>
+                </div>
               </div>
             `;
           })
