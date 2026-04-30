@@ -168,7 +168,7 @@
       }
       if (stored) {
         html.setAttribute('data-bs-theme', stored);
-        toggle.textContent = stored === 'dark' ? 'Dark' : 'Light';
+        toggle.textContent = stored === 'dark' ? 'Light' : 'Dark';
         updateNavbarTheme(stored);
       } else {
         toggle.textContent = 'Light';
@@ -179,7 +179,7 @@
         const next = current === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-bs-theme', next);
         localStorage.setItem('theme', next);
-        toggle.textContent = next === 'dark' ? 'Dark' : 'Light';
+        toggle.textContent = next === 'dark' ? 'Light' : 'Dark';
         updateNavbarTheme(next);
       });
     })();
