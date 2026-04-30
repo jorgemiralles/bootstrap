@@ -2,27 +2,34 @@
 <html lang="en">
   <head>
     <title>Grids</title>
-    <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
-
-    <!-- Bootstrap CSS v5.2.1 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
       rel="stylesheet"
-     
       crossorigin="anonymous"
     />
+    <style>
+      [class^="col"] {
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .demo-box {
+        padding: 1rem;
+        border-radius: 0.25rem;
+        text-align: center;
+        font-weight: 500;
+      }
+    </style>
   </head>
 
   <body>
-    <head>
-      <div class="container-fluid">
-        <nav class="navbar navbar-expand-sm bg-light navbar-light">
-          <div class="container-fluid">
+    <header>
+      <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNavbar">
             <ul class="navbar-nav">
               <li class="nav-item">
                 <a class="nav-link" href="/">Home</a>
@@ -31,7 +38,7 @@
                 <a class="nav-link" href="containers.html">Contenedores</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="grids.html">Grid</a>
+                <a class="nav-link active" href="grids.html">Grid</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="colorsandtext.html">Colores y texto</a>
@@ -68,48 +75,161 @@
               </li>
             </ul>
           </div>
-        </nav>
-      </div>
-    </head>
-    <div class="container-fluid mt-3">
-      <h1>Three equal width columns</h1>
-      <p>
-        Note: Try to add a new div with class="col" inside the row class - this
-        will create four equal-width columns.
-      </p>
-      <div class="row">
-        <div class="col p-3 bg-primary text-white">.col</div>
-        <div class="col p-3 bg-dark text-white">.col</div>
-        <div class="col p-3 bg-primary text-white">.col</div>
-      </div>
-    </div>
+        </div>
+      </nav>
+    </header>
 
-    <div class="container-fluid mt-3">
-      <h1>Responsive Columns</h1>
-      <p>Resize the browser window to see the effect.</p>
-      <p>
-        The columns will automatically stack on top of each other when the
-        screen is less than 576px wide.
-      </p>
-      <div class="row">
-        <div class="col-sm-3 p-3 bg-primary text-white">.col</div>
-        <div class="col-sm-3 p-3 bg-dark text-white">.col</div>
-        <div class="col-sm-3 p-3 bg-primary text-white">.col</div>
-        <div class="col-sm-3 p-3 bg-dark text-white">.col</div>
-      </div>
-    </div>
+    <main class="container-fluid mt-4">
+      <h1 class="mb-4">Bootstrap 5 Grid System</h1>
 
-    <div class="container-fluid mt-3">
-      <h1>Two Unequal Responsive Columns</h1>
-      <p>Resize the browser window to see the effect.</p>
-      <p>
-        The columns will automatically stack on top of each other when the
-        screen is less than 576px wide.
-      </p>
-      <div class="row">
-        <div class="col-sm-4 p-3 bg-primary text-white">.col</div>
-        <div class="col-sm-8 p-3 bg-dark text-white">.col</div>
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Equal Width Columns</h3>
+          <p class="text-muted">Columns without specified width will be equal.</p>
+          <div class="row">
+            <div class="col demo-box bg-primary text-white">.col</div>
+            <div class="col demo-box bg-secondary text-white">.col</div>
+            <div class="col demo-box bg-primary text-white">.col</div>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Setting One Column Width</h3>
+          <p class="text-muted">Use <code>col-{breakpoint}-{number}</code> to set specific column widths.</p>
+          <div class="row">
+            <div class="col-3 demo-box bg-primary text-white">.col-3</div>
+            <div class="col-6 demo-box bg-secondary text-white">.col-6</div>
+            <div class="col-3 demo-box bg-primary text-white">.col-3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Responsive Columns (sm breakpoint)</h3>
+          <p class="text-muted">Columns stack vertically when screen is less than 576px wide.</p>
+          <div class="row">
+            <div class="col-sm-3 demo-box bg-primary text-white">.col-sm-3</div>
+            <div class="col-sm-3 demo-box bg-dark text-white">.col-sm-3</div>
+            <div class="col-sm-3 demo-box bg-primary text-white">.col-sm-3</div>
+            <div class="col-sm-3 demo-box bg-dark text-white">.col-sm-3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Mixed Responsive Breakpoints</h3>
+          <p class="text-muted">Different column widths at different breakpoints.</p>
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 demo-box bg-primary text-white">12/6/4/3</div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 demo-box bg-success text-white">12/6/4/3</div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 demo-box bg-warning text-dark">12/6/4/3</div>
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 demo-box bg-info text-dark">12/6/4/3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Unequal Columns</h3>
+          <p class="text-muted">Using different column sizes in the same row.</p>
+          <div class="row">
+            <div class="col-sm-4 demo-box bg-primary text-white">.col-sm-4</div>
+            <div class="col-sm-8 demo-box bg-dark text-white">.col-sm-8</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Offset Columns</h3>
+          <p class="text-muted">Use <code>offset-{breakpoint}-{number}</code> to shift columns.</p>
+          <div class="row">
+            <div class="col-md-4 demo-box bg-primary text-white">.col-md-4</div>
+            <div class="col-md-4 offset-md-4 demo-box bg-dark text-white">.col-md-4 .offset-md-4</div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-4 offset-md-4 demo-box bg-success text-white">.col-md-4 .offset-md-4</div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-md-6 offset-md-3 demo-box bg-warning text-dark">.col-md-6 .offset-md-3</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Nested Columns</h3>
+          <p class="text-muted">Grids can be nested inside columns.</p>
+          <div class="row">
+            <div class="col-sm-8 demo-box bg-primary text-white">
+              .col-sm-8
+              <div class="row mt-2">
+                <div class="col-6 demo-box bg-light text-dark">.col-6</div>
+                <div class="col-6 demo-box bg-light text-dark">.col-6</div>
+              </div>
+            </div>
+            <div class="col-sm-4 demo-box bg-dark text-white">.col-sm-4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Column Ordering</h3>
+          <p class="text-muted">Use <code>order-{number}</code> to change visual order.</p>
+          <div class="row">
+            <div class="col demo-box bg-primary text-white order-3">First, but ordered last</div>
+            <div class="col demo-box bg-secondary text-white order-2">Second, but ordered middle</div>
+            <div class="col demo-box bg-dark text-white order-1">Third, but ordered first</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Alignment - Vertical</h3>
+          <p class="text-muted">Use <code>align-items-start|center|end</code> on the row.</p>
+          <div class="row align-items-center" style="height: 150px;">
+            <div class="col demo-box bg-primary text-white">.col (centered)</div>
+            <div class="col demo-box bg-dark text-white">.col (centered)</div>
+            <div class="col demo-box bg-primary text-white">.col (centered)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">Alignment - Horizontal</h3>
+          <p class="text-muted">Use <code>justify-content-center|start|end|between|around</code> on the row.</p>
+          <div class="row justify-content-center">
+            <div class="col-4 demo-box bg-primary text-white">.col-4</div>
+            <div class="col-4 demo-box bg-dark text-white">.col-4</div>
+          </div>
+          <div class="row justify-content-between mt-2">
+            <div class="col-4 demo-box bg-primary text-white">.col-4</div>
+            <div class="col-4 demo-box bg-dark text-white">.col-4</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="card-title">No Gutters</h3>
+          <p class="text-muted">Use <code>g-0</code> to remove gutters between columns.</p>
+          <div class="row g-0">
+            <div class="col demo-box bg-primary text-white">.col (no gutter)</div>
+            <div class="col demo-box bg-dark text-white">.col (no gutter)</div>
+            <div class="col demo-box bg-primary text-white">.col (no gutter)</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"></script>
   </body>
 </html>
