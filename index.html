@@ -5,20 +5,18 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
   <header>
-    <div class="container-fluid">
-      <nav class="navbar navbar-expand-sm bg-light navbar-light">
-        <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link active" href="/">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="containers.html">Contenedores</a>
@@ -60,46 +58,87 @@
               <a href="https://themes.getbootstrap.com/" class="nav-link text-primary">Temas</a>
             </li>
           </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </header>
-  <main>
-    <div class="container-fluid p-5 bg-primary text-white text-center">
-      <h1>My First Bootstrap Page</h1>
-      <p>Resize this responsive page to see the effect!</p>
-    </div>
-
-    <div class="container-fluid mt-5">
-      <div class="row">
-        <div class="col-sm-4">
-          <h3>Column 1</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-          <p>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris...
-          </p>
-        </div>
-        <div class="col-sm-4">
-          <h3>Column 2</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-          <p>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris...
-          </p>
-        </div>
-        <div class="col-sm-4">
-          <h3>Column 3</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit...</p>
-          <p>
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco
-            laboris...
-          </p>
         </div>
       </div>
-    </div>
-  </main>
-</body>
+    </nav>
+  </header>
 
+  <main>
+    <section class="p-5 bg-primary text-white text-center">
+      <div class="container">
+        <h1 class="display-4 fw-bold">Bootstrap 5 Components</h1>
+        <p class="lead">Explore Bootstrap 5 components with interactive examples.</p>
+      </div>
+    </section>
+
+    <section class="container my-5">
+      <h2 class="text-center mb-4">Component Examples</h2>
+      <div class="row g-4">
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-primary">
+            <div class="card-body text-center">
+              <h3 class="card-title text-primary">Layout</h3>
+              <p class="card-text">Containers, grid system, breakpoints, and responsive columns.</p>
+              <a href="grids.html" class="btn btn-primary">View Grid</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-success">
+            <div class="card-body text-center">
+              <h3 class="card-title text-success">Components</h3>
+              <p class="card-text">Alerts, buttons, cards, modals, and navigation bars.</p>
+              <a href="alerts.html" class="btn btn-success">View Alerts</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-info">
+            <div class="card-body text-center">
+              <h3 class="card-title text-info">Tables</h3>
+              <p class="card-text">Styled tables with borders, stripes, hover effects, and colors.</p>
+              <a href="tables.html" class="btn btn-info">View Tables</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-warning">
+            <div class="card-body text-center">
+              <h3 class="card-title text-warning">Forms</h3>
+              <p class="card-text">Input fields, selects, checkboxes, radio buttons, and validation.</p>
+              <a href="forms.html" class="btn btn-warning">View Forms</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-danger">
+            <div class="card-body text-center">
+              <h3 class="card-title text-danger">Modals</h3>
+              <p class="card-text">Dialog boxes, confirmations, and interactive pop-up windows.</p>
+              <a href="modals.html" class="btn btn-danger">View Modals</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="card h-100 border-secondary">
+            <div class="card-body text-center">
+              <h3 class="card-title text-secondary">Styling</h3>
+              <p class="card-text">Colors, typography, text utilities, and spacing classes.</p>
+              <a href="colorsandtext.html" class="btn btn-secondary">View Styling</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-dark text-white text-center py-4 mt-5">
+    <div class="container">
+      <p class="mb-1">Bootstrap 5 Component Examples</p>
+      <small>Built with Bootstrap 5.3.8</small>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
 </html>
