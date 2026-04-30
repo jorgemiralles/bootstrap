@@ -13,3 +13,29 @@ This is a static HTML documentation repo - no build, test, or lint commands need
 - No package manager, no dependencies
 - Just edit and reload HTML files in browser to verify changes
 - Package manager: Alpine (use `apk add <package>`)
+
+## Project conventions
+
+- **Bootstrap version**: 5.3.8 via CDN (no integrity attributes)
+- **Layout structure**: Semantic HTML5 (`<header>`, `<main>`, `<footer>`) with independent sections
+- **Full-width sections**: Apply background colors to `<section>` elements, use `.container` inside for centered content
+- **Navbar**: All pages use collapsible navbar with `navbar-toggler` + collapse wrapper for mobile
+- **CDN assets**: No `integrity` or `crossorigin` attributes (hash mismatches between versions)
+- **Script placement**: Bootstrap JS bundle loaded at the end of `<body>`
+- **No emojis** in code or content
+
+## File list
+
+| File | Description |
+|---|---|
+| `index.html` | Landing page with hero section, 6-component card grid, footer |
+| `containers.html` | Container examples |
+| `grids.html` | Grid system examples (offsets, nesting, ordering, alignment, mixed breakpoints) |
+| `colorsandtext.html` | Color and text utilities |
+| `tables.html` | Table styling examples |
+| `alerts.html` | Alert components |
+| `buttons.html` | Button components |
+| `cards.html` | Card components |
+| `navbars.html` | Navigation components |
+| `modals.html` | Modal dialogs |
+| `forms.html` | Form components |
