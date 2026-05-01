@@ -218,7 +218,7 @@
         const id = currentOffset + i + 1;
         return `
           <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-            <div class="card h-100 text-center">
+            <div class="card h-100 text-center pokemon-card" style="cursor: pointer;" data-pokemon-url="${p.url}">
               <div class="card-body p-2">
                 <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;">
                 <h6 class="card-title text-capitalize mb-1">${p.name}</h6>
@@ -229,6 +229,12 @@
         `;
       }).join('');
       pokemonList.innerHTML = pokemonHTML;
+      document.querySelectorAll('.pokemon-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const url = this.getAttribute('data-pokemon-url');
+          fetchPokemonData(url);
+        });
+      });
       const currentPage = Math.floor(currentOffset / limit) + 1;
       const totalPages = Math.ceil(count / limit);
       pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
@@ -259,6 +265,52 @@
         fetchPage(currentOffset + limit);
       }
     });
+    function fetchPokemonData(url) {
+      pokemonData.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
+          const stats = data.stats.map(s => `
+            <div class="mb-1">
+              <small>${s.stat.name}: ${s.base_stat}</small>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
+              </div>
+            </div>
+          `).join('');
+          pokemonData.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-6 text-center">
+                    <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
+                  </div>
+                  <div class="col-md-6">
+                    <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
+                    <div class="mb-3">${types}</div>
+                    <div class="mb-3">
+                      <div><small>Height: ${data.height / 10}m</small></div>
+                      <div><small>Weight: ${data.weight / 10}kg</small></div>
+                      <div><small>Base Exp: ${data.base_experience}</small></div>
+                    </div>
+                    <h6>Stats</h6>
+                    ${stats}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          pokemonData.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonData.innerHTML = '<div class="alert alert-danger">Failed to fetch data!</div>';
+        });
+    }
   </script>
   <script>
     (function() {
