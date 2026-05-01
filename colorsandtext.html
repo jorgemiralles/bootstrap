@@ -11,6 +11,12 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
     crossorigin="anonymous" />
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      if (stored) document.documentElement.setAttribute('data-bs-theme', stored);
+    })();
+  </script>
 </head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -119,11 +125,11 @@
       const stored = localStorage.getItem('theme');
       function updateNavbarTheme(theme) {
         if (theme === 'dark') {
-          navbar.classList.remove('bg-light', 'navbar-light');
-          navbar.classList.add('bg-dark', 'navbar-dark');
+          navbar.classList.remove('navbar-light');
+          navbar.classList.add('navbar-dark');
         } else {
-          navbar.classList.remove('bg-dark', 'navbar-dark');
-          navbar.classList.add('bg-light', 'navbar-light');
+          navbar.classList.remove('navbar-dark');
+          navbar.classList.add('navbar-light');
         }
       }
       if (stored) {
