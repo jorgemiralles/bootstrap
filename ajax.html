@@ -98,12 +98,21 @@
           <div class="card">
             <div class="card-body text-center">
               <h3 class="card-title mb-4">Pokemon List</h3>
-              <button class="btn btn-success" id="loadList">Load All Pokemon</button>
+              <button class="btn btn-success" id="loadList">Load Pokemon</button>
             </div>
           </div>
         </div>
       </div>
       <div id="pokemonList" class="row g-2"></div>
+      <div class="row justify-content-center mt-4 d-none" id="pagination">
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between align-items-center">
+            <button class="btn btn-outline-primary" id="prevPage">Previous</button>
+            <span id="pageInfo" class="text-muted"></span>
+            <button class="btn btn-outline-primary" id="nextPage">Next</button>
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 
@@ -177,34 +186,78 @@
     });
     const loadListBtn = document.getElementById('loadList');
     const pokemonList = document.getElementById('pokemonList');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
+    const pagination = document.getElementById('pagination');
+    let currentOffset = 0;
+    let totalCount = 0;
+    const limit = 20;
     loadListBtn.addEventListener('click', function() {
       loadListBtn.disabled = true;
       loadListBtn.textContent = 'Loading...';
       pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-      fetch('https://pokeapi.co/api/v2/pokemon?limit=10000')
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
         .then(response => response.json())
         .then(data => {
-          const pokemonHTML = data.results.map((p, i) => `
-            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-              <div class="card h-100 text-center">
-                <div class="card-body p-2">
-                  <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${i+1}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;">
-                  <h6 class="card-title text-capitalize mb-1">${p.name}</h6>
-                  <small class="text-muted">#${i + 1}</small>
-                </div>
-              </div>
-            </div>
-          `).join('');
-          pokemonList.innerHTML = pokemonHTML;
+          totalCount = data.count;
+          currentOffset = 0;
+          renderPage(data.results, data.count);
           loadListBtn.textContent = 'Reload List';
           loadListBtn.disabled = false;
         })
         .catch(error => {
           console.error('Fetch error:', error);
           pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
-          loadListBtn.textContent = 'Load All Pokemon';
+          loadListBtn.textContent = 'Load Pokemon';
           loadListBtn.disabled = false;
         });
+    });
+    function renderPage(results, count) {
+      const pokemonHTML = results.map((p, i) => {
+        const id = currentOffset + i + 1;
+        return `
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="card h-100 text-center">
+              <div class="card-body p-2">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;">
+                <h6 class="card-title text-capitalize mb-1">${p.name}</h6>
+                <small class="text-muted">#${id}</small>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+      pokemonList.innerHTML = pokemonHTML;
+      const currentPage = Math.floor(currentOffset / limit) + 1;
+      const totalPages = Math.ceil(count / limit);
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevPageBtn.disabled = currentOffset === 0;
+      nextPageBtn.disabled = currentOffset + limit >= count;
+      pagination.classList.remove('d-none');
+    }
+    function fetchPage(offset) {
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
+        .then(response => response.json())
+        .then(data => {
+          currentOffset = offset;
+          renderPage(data.results, data.count);
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
+        });
+    }
+    prevPageBtn.addEventListener('click', function() {
+      if (currentOffset >= limit) {
+        fetchPage(currentOffset - limit);
+      }
+    });
+    nextPageBtn.addEventListener('click', function() {
+      if (currentOffset + limit < totalCount) {
+        fetchPage(currentOffset + limit);
+      }
     });
   </script>
   <script>
