@@ -208,7 +208,7 @@
         const next = current === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-bs-theme', next);
         localStorage.setItem('theme', next);
-        toggle.textContent = next === 'dark' ? 'Dark' : 'Light';
+        toggle.textContent = next === 'dark' ? 'Light' : 'Dark';
         updateNavbarTheme(next);
       });
     })();
