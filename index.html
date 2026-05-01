@@ -16,6 +16,12 @@
       background-color: var(--bs-primary);
     }
   </style>
+  <script>
+    (function() {
+      const stored = localStorage.getItem('theme');
+      if (stored) document.documentElement.setAttribute('data-bs-theme', stored);
+    })();
+  </script>
 </head>
 <body class="d-flex flex-column min-vh-100">
   <header>
