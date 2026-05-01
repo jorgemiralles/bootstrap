@@ -91,6 +91,20 @@
       </div>
       <div id="pokemonData"></div>
     </div>
+
+    <div class="container mt-5">
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-body text-center">
+              <h3 class="card-title mb-4">Pokemon List</h3>
+              <button class="btn btn-success" id="loadList">Load All Pokemon</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="pokemonList" class="row g-2"></div>
+    </div>
   </main>
 
   <footer class="bg-secondary text-white text-center py-2 mt-5">
@@ -160,6 +174,36 @@
             pokemonData.innerHTML = '<div class="alert alert-danger">Failed to fetch data!</div>';
           });
       });
+    });
+    const loadListBtn = document.getElementById('loadList');
+    const pokemonList = document.getElementById('pokemonList');
+    loadListBtn.addEventListener('click', function() {
+      loadListBtn.disabled = true;
+      loadListBtn.textContent = 'Loading...';
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch('https://pokeapi.co/api/v2/pokemon?limit=10000')
+        .then(response => response.json())
+        .then(data => {
+          const pokemonHTML = data.results.map((p, i) => `
+            <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+              <div class="card h-100 text-center">
+                <div class="card-body p-2">
+                  <h6 class="card-title text-capitalize mb-0">${p.name}</h6>
+                  <small class="text-muted">#${i + 1}</small>
+                </div>
+              </div>
+            </div>
+          `).join('');
+          pokemonList.innerHTML = pokemonHTML;
+          loadListBtn.textContent = 'Reload List';
+          loadListBtn.disabled = false;
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
+          loadListBtn.textContent = 'Load All Pokemon';
+          loadListBtn.disabled = false;
+        });
     });
   </script>
   <script>
