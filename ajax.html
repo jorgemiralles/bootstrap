@@ -94,20 +94,23 @@
     </div>
 
     <div class="container mt-3">
-      <div class="row justify-content-center mb-4">
+      <div id="pokemonData"></div>
+    </div>
+
+    <div class="container mt-5">
+      <h3 class="text-center mb-4">Pokemon List</h3>
+      <div id="pokemonList" class="row g-2"></div>
+      <div class="row justify-content-center mt-4 d-none" id="pagination">
         <div class="col-md-6">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="card-title mb-4">Pokemon Data Fetcher with AJAX</h3>
-              <div class="input-group">
-                <input type="text" class="form-control" id="pokemonName" placeholder="Enter Pokemon name" aria-label="Pokemon name">
-                <button class="btn btn-primary" id="fetchData" type="button">Fetch</button>
-              </div>
-            </div>
-          </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-secondary" id="firstPage">First</button>
+        <button class="btn btn-outline-primary" id="prevPage">Previous</button>
+        <span id="pageInfo" class="text-muted"></span>
+        <button class="btn btn-outline-primary" id="nextPage">Next</button>
+        <button class="btn btn-outline-secondary" id="lastPage">Last</button>
+      </div>
         </div>
       </div>
-      <div id="pokemonData"></div>
     </div>
   </main>
 
@@ -119,66 +122,147 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const fetchBtn = document.getElementById('fetchData');
-      const pokemonData = document.getElementById('pokemonData');
-      const pokemonInput = document.getElementById('pokemonName');
-      pokemonInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          fetchBtn.focus();
-          fetchBtn.click();
-        }
-      });
-      fetchBtn.addEventListener('click', function() {
-        const name = pokemonInput.value.trim().toLowerCase();
-        if (!name) {
-          pokemonData.innerHTML = '<div class="alert alert-warning">Please enter a Pokemon name</div>';
-          return;
-        }
-        fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
-          .then(response => {
-            if (!response.ok) throw new Error('Network response was not ok');
-            return response.json();
-          })
-          .then(data => {
-            const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
-            const stats = data.stats.map(s => `
-              <div class="mb-1">
-                <small>${s.stat.name}: ${s.base_stat}</small>
-                <div class="progress" style="height: 8px;">
-                  <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
-                </div>
+    const pokemonData = document.getElementById('pokemonData');
+    const pokemonList = document.getElementById('pokemonList');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const firstPageBtn = document.getElementById('firstPage');
+    const lastPageBtn = document.getElementById('lastPage');
+    const pageInfo = document.getElementById('pageInfo');
+    const pagination = document.getElementById('pagination');
+    let currentOffset = 0;
+    let totalCount = 0;
+    const limit = 20;
+    function loadPokemon() {
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          if (!data.results) throw new Error('Invalid API response');
+          totalCount = data.count;
+          currentOffset = 0;
+          renderPage(data.results, data.count);
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
+        });
+    }
+    loadPokemon();
+    function renderPage(results, count) {
+      const pokemonHTML = results.map((p, i) => {
+        const id = currentOffset + i + 1;
+        return `
+          <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+            <div class="card h-100 text-center pokemon-card" style="cursor: pointer;" data-pokemon-url="${p.url}">
+              <div class="card-body p-2">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;">
+                <h6 class="card-title text-capitalize mb-1">${p.name}</h6>
+                <small class="text-muted">#${id}</small>
               </div>
-            `).join('');
-            pokemonData.innerHTML = `
-              <div class="card">
-                <div class="card-body">
-                  <div class="row align-items-center">
-                    <div class="col-md-6 text-center">
-                      <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
+            </div>
+          </div>
+        `;
+      }).join('');
+      pokemonList.innerHTML = pokemonHTML;
+      document.querySelectorAll('.pokemon-card').forEach(card => {
+        card.addEventListener('click', function() {
+          const url = this.getAttribute('data-pokemon-url');
+          fetchPokemonData(url);
+        });
+      });
+      const currentPage = Math.floor(currentOffset / limit) + 1;
+      const totalPages = Math.ceil(count / limit);
+      pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+      prevPageBtn.disabled = currentOffset === 0;
+      nextPageBtn.disabled = currentOffset + limit >= count;
+      firstPageBtn.disabled = currentOffset === 0;
+      lastPageBtn.disabled = currentOffset + limit >= count;
+      pagination.classList.remove('d-none');
+    }
+    function fetchPage(offset) {
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
+        .then(response => response.json())
+        .then(data => {
+          currentOffset = offset;
+          renderPage(data.results, data.count);
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
+        });
+    }
+    prevPageBtn.addEventListener('click', function() {
+      if (currentOffset >= limit) {
+        fetchPage(currentOffset - limit);
+      }
+    });
+    nextPageBtn.addEventListener('click', function() {
+      if (currentOffset + limit < totalCount) {
+        fetchPage(currentOffset + limit);
+      }
+    });
+    firstPageBtn.addEventListener('click', function() {
+      if (currentOffset > 0) {
+        fetchPage(0);
+      }
+    });
+    lastPageBtn.addEventListener('click', function() {
+      const lastOffset = Math.floor((totalCount - 1) / limit) * limit;
+      if (currentOffset < lastOffset) {
+        fetchPage(lastOffset);
+      }
+    });
+    function fetchPokemonData(url) {
+      pokemonData.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
+          const stats = data.stats.map(s => `
+            <div class="mb-1">
+              <small>${s.stat.name}: ${s.base_stat}</small>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
+              </div>
+            </div>
+          `).join('');
+          pokemonData.innerHTML = `
+            <div class="card">
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-6 text-center">
+                    <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
+                  </div>
+                  <div class="col-md-6">
+                    <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
+                    <div class="mb-3">${types}</div>
+                    <div class="mb-3">
+                      <div><small>Height: ${data.height / 10}m</small></div>
+                      <div><small>Weight: ${data.weight / 10}kg</small></div>
+                      <div><small>Base Exp: ${data.base_experience}</small></div>
                     </div>
-                    <div class="col-md-6">
-                      <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
-                      <div class="mb-3">${types}</div>
-                      <div class="mb-3">
-                        <div><small>Height: ${data.height / 10}m</small></div>
-                        <div><small>Weight: ${data.weight / 10}kg</small></div>
-                        <div><small>Base Exp: ${data.base_experience}</small></div>
-                      </div>
-                      <h6>Stats</h6>
-                      ${stats}
-                    </div>
+                    <h6>Stats</h6>
+                    ${stats}
                   </div>
                 </div>
               </div>
-            `;
-          })
-          .catch(error => {
-            console.error('Fetch error:', error);
-            pokemonData.innerHTML = '<div class="alert alert-danger">Failed to fetch data!</div>';
-          });
-      });
-    });
+            </div>
+          `;
+          pokemonData.scrollIntoView({ behavior: 'smooth' });
+        })
+        .catch(error => {
+          console.error('Fetch error:', error);
+          pokemonData.innerHTML = '<div class="alert alert-danger">Failed to fetch data!</div>';
+        });
+    }
   </script>
   <script>
     (function() {
