@@ -119,8 +119,12 @@
     function loadPokemon() {
       pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
-        .then(response => response.json())
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
         .then(data => {
+          if (!data.results) throw new Error('Invalid API response');
           totalCount = data.count;
           currentOffset = 0;
           renderPage(data.results, data.count);
