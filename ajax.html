@@ -93,24 +93,17 @@
     </div>
 
     <div class="container mt-5">
-      <div class="row justify-content-center mb-4">
-        <div class="col-md-8">
-          <div class="card">
-            <div class="card-body text-center">
-              <h3 class="card-title mb-4">Pokemon List</h3>
-              <button class="btn btn-success" id="loadList">Load Pokemon</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <h3 class="text-center mb-4">Pokemon List</h3>
       <div id="pokemonList" class="row g-2"></div>
       <div class="row justify-content-center mt-4 d-none" id="pagination">
         <div class="col-md-6">
-          <div class="d-flex justify-content-between align-items-center">
-            <button class="btn btn-outline-primary" id="prevPage">Previous</button>
-            <span id="pageInfo" class="text-muted"></span>
-            <button class="btn btn-outline-primary" id="nextPage">Next</button>
-          </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-secondary" id="firstPage">First</button>
+        <button class="btn btn-outline-primary" id="prevPage">Previous</button>
+        <span id="pageInfo" class="text-muted"></span>
+        <button class="btn btn-outline-primary" id="nextPage">Next</button>
+        <button class="btn btn-outline-secondary" id="lastPage">Last</button>
+      </div>
         </div>
       </div>
     </div>
@@ -184,18 +177,17 @@
           });
       });
     });
-    const loadListBtn = document.getElementById('loadList');
     const pokemonList = document.getElementById('pokemonList');
     const prevPageBtn = document.getElementById('prevPage');
     const nextPageBtn = document.getElementById('nextPage');
+    const firstPageBtn = document.getElementById('firstPage');
+    const lastPageBtn = document.getElementById('lastPage');
     const pageInfo = document.getElementById('pageInfo');
     const pagination = document.getElementById('pagination');
     let currentOffset = 0;
     let totalCount = 0;
     const limit = 20;
-    loadListBtn.addEventListener('click', function() {
-      loadListBtn.disabled = true;
-      loadListBtn.textContent = 'Loading...';
+    function loadPokemon() {
       pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
         .then(response => response.json())
@@ -203,16 +195,13 @@
           totalCount = data.count;
           currentOffset = 0;
           renderPage(data.results, data.count);
-          loadListBtn.textContent = 'Reload List';
-          loadListBtn.disabled = false;
         })
         .catch(error => {
           console.error('Fetch error:', error);
           pokemonList.innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to fetch Pokemon list!</div></div>';
-          loadListBtn.textContent = 'Load Pokemon';
-          loadListBtn.disabled = false;
         });
-    });
+    }
+    loadPokemon();
     function renderPage(results, count) {
       const pokemonHTML = results.map((p, i) => {
         const id = currentOffset + i + 1;
@@ -240,6 +229,8 @@
       pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
       prevPageBtn.disabled = currentOffset === 0;
       nextPageBtn.disabled = currentOffset + limit >= count;
+      firstPageBtn.disabled = currentOffset === 0;
+      lastPageBtn.disabled = currentOffset + limit >= count;
       pagination.classList.remove('d-none');
     }
     function fetchPage(offset) {
@@ -263,6 +254,17 @@
     nextPageBtn.addEventListener('click', function() {
       if (currentOffset + limit < totalCount) {
         fetchPage(currentOffset + limit);
+      }
+    });
+    firstPageBtn.addEventListener('click', function() {
+      if (currentOffset > 0) {
+        fetchPage(0);
+      }
+    });
+    lastPageBtn.addEventListener('click', function() {
+      const lastOffset = Math.floor((totalCount - 1) / limit) * limit;
+      if (currentOffset < lastOffset) {
+        fetchPage(lastOffset);
       }
     });
     function fetchPokemonData(url) {
