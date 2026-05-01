@@ -25,7 +25,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
   <header>
-    <nav id="mainNav" class="navbar navbar-expand-sm bg-light navbar-light">
+    <nav id="mainNav" class="navbar navbar-expand-sm bg-body-tertiary">
       <div class="container">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
           <span class="navbar-toggler-icon"></span>
@@ -82,6 +82,18 @@
         <button class="btn btn-outline-secondary ms-auto" id="themeToggle" aria-label="Toggle theme">Dark</button>
       </div>
     </nav>
+      <script>
+        (function() {
+          const navbar = document.getElementById('mainNav');
+          if (!navbar) return;
+          const stored = localStorage.getItem('theme');
+          if (stored === 'dark') {
+            navbar.classList.add('navbar-dark');
+          } else {
+            navbar.classList.add('navbar-light');
+          }
+        })();
+      </script>
   </header>
 
   <main>
