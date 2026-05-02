@@ -1,6 +1,6 @@
 # AGENTS.md
 
-This is a static HTML documentation repo - no build, test, or lint commands needed.
+This is a static HTML documentation repo - no build, test, or lint commands needed. 
 
 ## Files
 
