@@ -92,26 +92,25 @@
 
   <main class="flex-grow-1">
     <div class="container mt-3">
-      <h2>AJAX Examples</h2>
-      <p class="text-muted mb-4">Fetch and display data dynamically using AJAX requests.</p>
-    </div>
-
-    <div class="container mt-3">
-      <div id="pokemonData"></div>
-    </div>
-
-    <div class="container mt-5">
-      <h3 class="text-center mb-4">Pokemon List</h3>
-      <div id="pokemonList" class="row g-2"></div>
-      <div class="row justify-content-center mt-4 d-none" id="pagination">
-        <div class="col-md-6">
-      <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-outline-secondary" id="firstPage">First</button>
-        <button class="btn btn-outline-primary" id="prevPage">Previous</button>
-        <span id="pageInfo" class="text-muted"></span>
-        <button class="btn btn-outline-primary" id="nextPage">Next</button>
-        <button class="btn btn-outline-secondary" id="lastPage">Last</button>
-      </div>
+      <div class="row g-3">
+        <div class="col-lg-8">
+          <h3 class="text-center mb-4">AJAX Pokemon List</h3>
+          <div id="pokemonList" class="row g-2 overflow-auto" style="max-height: calc(100vh - 220px);"></div>
+          <div class="row justify-content-center mt-4 d-none" id="pagination">
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between align-items-center">
+                <button class="btn btn-outline-secondary" id="firstPage">First</button>
+                <button class="btn btn-outline-primary" id="prevPage">Previous</button>
+                <span id="pageInfo" class="text-muted"></span>
+                <button class="btn btn-outline-primary" id="nextPage">Next</button>
+                <button class="btn btn-outline-secondary" id="lastPage">Last</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <h3 class="text-center mb-4">Pokemon Info</h3>
+          <div id="pokemonData"></div>
         </div>
       </div>
     </div>
@@ -136,6 +135,7 @@
     let currentOffset = 0;
     let totalCount = 0;
     const limit = 20;
+    const totalPokemonCount = 1025;
     function loadPokemon() {
       pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=20&offset=0`)
@@ -155,6 +155,11 @@
         });
     }
     loadPokemon();
+    function loadRandomPokemon() {
+      const randomId = Math.floor(Math.random() * totalPokemonCount) + 1;
+      fetchPokemonData(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
+    }
+    loadRandomPokemon();
     function renderPage(results, count) {
       const pokemonHTML = results.map((p, i) => {
         const id = currentOffset + i + 1;
@@ -259,7 +264,6 @@
               </div>
             </div>
           `;
-          pokemonData.scrollIntoView({ behavior: 'smooth' });
         })
         .catch(error => {
           console.error('Fetch error:', error);
