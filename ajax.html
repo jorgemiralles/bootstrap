@@ -145,12 +145,11 @@
     const limitSelect = document.getElementById('limitSelect');
     let currentOffset = 0;
     let totalCount = 0;
-    const totalPokemonCount = 1025;
     function getLimit() {
       return parseInt(limitSelect.value);
     }
     function loadPokemon() {
-      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="d-flex justify-content-center align-items-center" style="min-height: 200px;"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></div>';
       const limit = getLimit();
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=0`)
         .then(response => {
@@ -162,6 +161,7 @@
           totalCount = data.count;
           currentOffset = 0;
           renderPage(data.results, data.count);
+          loadRandomPokemon();
         })
         .catch(error => {
           console.error('Fetch error:', error);
@@ -170,23 +170,23 @@
     }
     loadPokemon();
     function loadRandomPokemon() {
-      const randomId = Math.floor(Math.random() * totalPokemonCount) + 1;
+      if (!totalCount) return;
+      const randomId = Math.floor(Math.random() * totalCount) + 1;
       fetchPokemonData(`https://pokeapi.co/api/v2/pokemon/${randomId}`);
     }
-    loadRandomPokemon();
     limitSelect.addEventListener('change', function() {
       currentOffset = 0;
       loadPokemon();
     });
     function renderPage(results, count) {
       const limit = getLimit();
-      const pokemonHTML = results.map((p, i) => {
-        const id = currentOffset + i + 1;
+      const pokemonHTML = results.map((p) => {
+        const id = p.url.split('/').filter(Boolean).pop();
         return `
           <div class="col-6 col-sm-4 col-md-3 col-lg-2">
             <div class="card h-100 text-center pokemon-card" style="cursor: pointer;" data-pokemon-url="${p.url}">
               <div class="card-body p-2">
-                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;">
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" alt="${p.name}" class="img-fluid mb-2" style="max-height: 80px;" loading="lazy">
                 <h6 class="card-title text-capitalize mb-1">${p.name}</h6>
                 <small class="text-muted">#${id}</small>
               </div>
@@ -211,7 +211,7 @@
       pagination.classList.remove('d-none');
     }
     function fetchPage(offset) {
-      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      pokemonList.innerHTML = '<div class="col-12 text-center"><div class="d-flex justify-content-center align-items-center" style="min-height: 200px;"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></div>';
       const limit = getLimit();
       fetch(`https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`)
         .then(response => response.json())
@@ -249,49 +249,52 @@
       }
     });
     function fetchPokemonData(url) {
-      pokemonData.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+      pokemonData.innerHTML = '<div class="text-center"><div class="d-flex justify-content-center align-items-center" style="min-height: 200px;"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div></div>';
       fetch(url)
         .then(response => {
           if (!response.ok) throw new Error('Network response was not ok');
           return response.json();
         })
         .then(data => {
-          const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
-          const stats = data.stats.map(s => `
-            <div class="mb-1">
-              <small>${s.stat.name}: ${s.base_stat}</small>
-              <div class="progress" style="height: 8px;">
-                <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
-              </div>
-            </div>
-          `).join('');
-          pokemonData.innerHTML = `
-            <div class="card">
-              <div class="card-body">
-                <div class="row align-items-center">
-                  <div class="col-md-6 text-center">
-                    <img src="${data.sprites.other['official-artwork'].front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
-                  </div>
-                  <div class="col-md-6">
-                    <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
-                    <div class="mb-3">${types}</div>
-                    <div class="mb-3">
-                      <div><small>Height: ${data.height / 10}m</small></div>
-                      <div><small>Weight: ${data.weight / 10}kg</small></div>
-                      <div><small>Base Exp: ${data.base_experience}</small></div>
-                    </div>
-                    <h6>Stats</h6>
-                    ${stats}
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
+          displayPokemonData(data);
         })
         .catch(error => {
           console.error('Fetch error:', error);
           pokemonData.innerHTML = '<div class="alert alert-danger">Failed to fetch data!</div>';
         });
+    }
+    function displayPokemonData(data) {
+      const types = data.types.map(t => `<span class="badge bg-primary me-1">${t.type.name}</span>`).join('');
+      const stats = data.stats.map(s => `
+        <div class="mb-1">
+          <small>${s.stat.name}: ${s.base_stat}</small>
+          <div class="progress" style="height: 8px;">
+            <div class="progress-bar" style="width: ${Math.min(s.base_stat, 100)}%"></div>
+          </div>
+        </div>
+      `).join('');
+      pokemonData.innerHTML = `
+        <div class="card">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col-md-6 text-center">
+                <img src="${data.sprites.other['official-artwork'].front_default || data.sprites.front_default}" alt="${data.name}" class="img-fluid" style="max-height: 400px;">
+              </div>
+              <div class="col-md-6">
+                <h4 class="text-capitalize">${data.name} <span class="text-muted">#${data.id}</span></h4>
+                <div class="mb-3">${types}</div>
+                <div class="mb-3">
+                  <div><small>Height: ${data.height / 10}m</small></div>
+                  <div><small>Weight: ${data.weight / 10}kg</small></div>
+                  <div><small>Base Exp: ${data.base_experience}</small></div>
+                </div>
+                <h6>Stats</h6>
+                ${stats}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
     }
   </script>
   <script>
